@@ -64,6 +64,38 @@ enum DesignTokens {
         static let lg: CGFloat = 32
         static let xl: CGFloat = 48
     }
+    
+    // MARK: - Touch Targets (Apple HIG)
+    enum HIG {
+        /// Minimum 44pt for all interactive elements
+        static let minTouchTarget: CGFloat = 44
+        /// Bottom-aligned primary actions for thumb reachability
+        static let bottomSafeArea: CGFloat = 34
+    }
+    
+    // MARK: - Motion (see SpringAnimations.swift)
+    enum Motion {
+        static let quick: Animation = .easeOut(duration: 0.15)
+        static let standard: Animation = .easeInOut(duration: 0.3)
+        static let spring: Animation = .spring(response: 0.4, dampingFraction: 0.7)
+        static let snappy: Animation = .spring(response: 0.2, dampingFraction: 0.7)
+        static let gentle: Animation = .spring(response: 0.55, dampingFraction: 0.9)
+    }
+    
+    // MARK: - Goal-Gradient (XP Bar + Streak)
+    enum Progress {
+        static let xpBarHeight: CGFloat = 8
+        static let xpBarRadius: CGFloat = 4
+        static let streakFlameSize: CGFloat = 32
+        static let levelBadgeSize: CGFloat = 44
+    }
+    
+    // MARK: - Opacity
+    enum Opacity {
+        static let disabled: Double = 0.4
+        static let secondary: Double = 0.6
+        static let overlay: Double = 0.8
+    }
 }
 
 // MARK: - Shadow Style Helper

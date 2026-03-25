@@ -116,3 +116,87 @@ extension View {
         modifier(ShakeEffect(shakes: shakes))
     }
 }
+
+// MARK: - Goal-Gradient XP Bar
+
+struct AnimatedXPBar: View {
+    let progress: Double  // 0...1
+    let color: Color
+    @State private var animatedProgress: Double = 0
+    
+    var body: some View {
+        GeometryReader { geo in
+            ZStack(alignment: .leading) {
+                Capsule()
+                    .fill(color.opacity(0.15))
+                Capsule()
+                    .fill(color)
+                    .frame(width: geo.size.width * animatedProgress)
+            }
+        }
+        .frame(height: DesignTokens.Progress.xpBarHeight)
+        .clipShape(Capsule())
+        .onAppear {
+            withAnimation(AppAnimation.progressFill) {
+                animatedProgress = progress
+            }
+        }
+        .onChange(of: progress) { _, newValue in
+            withAnimation(AppAnimation.progressFill) {
+                animatedProgress = newValue
+            }
+        }
+    }
+}
+
+// MARK: - Streak Flame Animation
+
+struct StreakFlame: View {
+    let streakDays: Int
+    @State private var flameScale: CGFloat = 0
+    
+    var body: some View {
+        HStack(spacing: DesignTokens.Spacing.xs) {
+            Text("🔥")
+                .font(.system(size: DesignTokens.Progress.streakFlameSize))
+                .scaleEffect(flameScale)
+                .onAppear {
+                    withAnimation(AppAnimation.celebration) {
+                        flameScale = 1
+                    }
+                }
+            Text("\(streakDays)")
+                .font(AppTypography.streakCounter)
+                .foregroundStyle(DesignTokens.Colors.streakGold)
+        }
+    }
+}
+
+// MARK: - Correct/Wrong Answer Feedback
+
+struct AnswerFeedback: ViewModifier {
+    let isCorrect: Bool?
+    
+    func body(content: Content) -> some View {
+        content
+            .overlay(
+                RoundedRectangle(cornerRadius: DesignTokens.Radius.md)
+                    .stroke(feedbackColor, lineWidth: isCorrect != nil ? 3 : 0)
+                    .animation(AppAnimation.snappySpring, value: isCorrect)
+            )
+    }
+    
+    private var feedbackColor: Color {
+        switch isCorrect {
+        case .some(true): return DesignTokens.Colors.success
+        case .some(false): return DesignTokens.Colors.error
+        case .none: return .clear
+        }
+    }
+}
+
+extension View {
+    func answerFeedback(_ isCorrect: Bool?) -> some View {
+        modifier(AnswerFeedback(isCorrect: isCorrect))
+    }
+}

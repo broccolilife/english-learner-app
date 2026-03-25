@@ -52,4 +52,35 @@ extension View {
     func textStyle(_ font: Font, color: Color = DesignTokens.Colors.textPrimary) -> some View {
         modifier(AppTextStyle(font: font, color: color))
     }
+    
+    /// Flashcard word display style
+    func flashcardStyle() -> some View {
+        modifier(AppTextStyle(font: AppTypography.flashcardWord, color: DesignTokens.Colors.textPrimary))
+    }
+    
+    /// Phonetic transcription style
+    func phoneticStyle() -> some View {
+        modifier(AppTextStyle(font: AppTypography.phonetic, color: DesignTokens.Colors.pronunciationAccent))
+    }
+}
+
+// MARK: - Additional Typography
+
+extension AppTypography {
+    /// Quiz option text
+    static let quizOption: Font = .system(.body, design: .rounded, weight: .medium)
+    
+    /// Lesson progress label — "3 of 10"
+    static let progressLabel: Font = .system(.caption, design: .rounded, weight: .semibold)
+    
+    /// Grammar rule highlight
+    static let grammarRule: Font = .system(.callout, design: .serif, weight: .medium)
+    
+    /// Accessible variants that scale with Dynamic Type
+    enum Accessible {
+        static let display: Font = .system(.largeTitle, design: .rounded, weight: .bold)
+        static let heading: Font = .system(.title, design: .rounded, weight: .semibold)
+        static let body: Font = .system(.body, design: .default)
+        static let flashcard: Font = .system(.title, design: .serif, weight: .bold)
+    }
 }
